@@ -4,6 +4,9 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const bookRoutes = require('./routes/bookRoutes.js');
+
+
 
 // تحميل المتغيرات البيئية
 dotenv.config();
@@ -27,6 +30,8 @@ app.set('view engine', 'ejs');
 
 // المسارات
 app.use('/api/users', userRoutes);
+app.use('/api', bookRoutes);
+
 
 // (اختياري) عرض صفحة التسجيل مباشرة عبر السيرفر
 app.get('/register', (req, res) => {

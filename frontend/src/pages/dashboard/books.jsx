@@ -1,9 +1,14 @@
 
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function BooksManagement() {
     const [isAddingBook, setIsAddingBook] = useState(false);
+    const navigate = useNavigate();
+
     
     const books = [
       { id: 1, title: 'ديوان المتنبي', author: 'أبو الطيب المتنبي', price: '75 ر.س', stock: 42, sales: 354 },
@@ -18,8 +23,8 @@ function BooksManagement() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">إدارة الكتب</h2>
           <button
-            onClick={() => setIsAddingBook(true)}
-            className="bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-500 transition-colors"
+      onClick={() => navigate('/formbook')}
+      className="bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-500 transition-colors"
           >
             إضافة كتاب جديد
           </button>
