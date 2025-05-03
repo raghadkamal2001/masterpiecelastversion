@@ -11,6 +11,37 @@ const createBook = async (req, res) => {
   }
 };
 
+const getAllBooks = async (req, res) => {
+  try {
+    const books = await Book.find();
+    res.json(books);
+  } catch (err) {
+    res.status(500).json({ error: 'خطأ في جلب الكتب' });
+  }
+};
+
+const deleteBook = async (req, res) => {
+  try {
+    await Book.findByIdAndDelete(req.params.id);
+    res.json({ message: 'تم حذف الكتاب بنجاح' });
+  } catch (err) {
+    res.status(500).json({ error: 'فشل في الحذف' });
+  }
+};
+
+const updateBook = async (req, res) => {
+  try {
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedBook);
+  } catch (err) {
+    res.status(500).json({ error: 'فشل في التعديل' });
+  }
+};
+
 module.exports = {
-  createBook
+  createBook,
+  getAllBooks,
+deleteBook,
+updateBook 
+
 };

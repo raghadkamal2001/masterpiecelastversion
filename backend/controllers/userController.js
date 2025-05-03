@@ -103,8 +103,55 @@ const loginUser = async (req, res) => {
   }
 };
 
+
+// Get all users
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-password'); // لا ترجع كلمة المرور
+    res.status(200).json({ success: true, users });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Delete user by ID
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
+    }
+    res.status(200).json({ success: true, message: 'تم حذف المستخدم بنجاح' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Update user by ID
+const updateUser = async (req, res) => {
+  try {
+    const { name, username, email } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { name, username, email },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
+    }
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // إضافة إلى module.exports
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser,  getAllUsers,
+  deleteUser,
+  updateUser};
 
 
 

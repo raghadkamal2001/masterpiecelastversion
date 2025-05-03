@@ -5,6 +5,7 @@ const userRoutes = require('./routes/userRoutes');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const bookRoutes = require('./routes/bookRoutes.js');
+const  authorRoutes=  require('./routes/authorRoutes.js');
 
 
 
@@ -30,7 +31,10 @@ app.set('view engine', 'ejs');
 
 // المسارات
 app.use('/api/users', userRoutes);
-app.use('/api', bookRoutes);
+app.use('/api/books', bookRoutes);
+app.use('/api/authors', authorRoutes);
+
+
 
 
 // (اختياري) عرض صفحة التسجيل مباشرة عبر السيرفر

@@ -11,7 +11,9 @@ export default function AddBookForm() {
     characters: "",
     rhetorical: "",
     overview: "",
-    questions: ""
+    questions: "",
+    price: ""
+
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -34,7 +36,7 @@ export default function AddBookForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/books', {
+      const response = await fetch('http://localhost:5000/api/books/books', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,6 +87,7 @@ export default function AddBookForm() {
           <h3 className="text-xl font-bold mb-4 text-gray-800 border-b pb-2">معلومات الكتاب</h3>
           <p className="mb-2"><span className="font-bold ml-2">اسم الكتاب:</span> {bookData.title}</p>
           <p className="mb-2"><span className="font-bold ml-2">المؤلف:</span> {bookData.author}</p>
+          <p className="mb-2"><span className="font-bold ml-2">السعر:</span> {bookData.price}</p>
           <p className="mb-2"><span className="font-bold ml-2">النوع:</span> {bookData.category}</p>
           <p className="mb-2"><span className="font-bold ml-2">ملخص:</span> {bookData.summary}</p>
         </div>
@@ -103,7 +106,7 @@ export default function AddBookForm() {
 
   return (
     <div className="bg-amber-50 p-6 rounded-lg shadow-md text-right max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-amber-800 text-center">إضافة كتاب جديد</h2>
+      <h2 className="text-2xl font-bold mb-6 text-amber-800 text-center">إضافة عمل أدبي جديد</h2>
       
       {/* شريط التقدم */}
       <div className="mb-8">
@@ -128,7 +131,7 @@ export default function AddBookForm() {
           <div className="space-y-6">
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="title">
-                اسم الكتاب <span className="text-red-500">*</span>
+                اسم العمل الأدبي <span className="text-red-500">*</span>
               </label>
               <input
                 id="title"
@@ -138,7 +141,7 @@ export default function AddBookForm() {
                 value={bookData.title}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
-                placeholder="أدخل اسم الكتاب"
+                placeholder="أدخل اسم العمل الأدبي"
               />
             </div>
 
@@ -160,7 +163,7 @@ export default function AddBookForm() {
 
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="category">
-                نوع الكتاب <span className="text-red-500">*</span>
+                نوع العمل الأدبي <span className="text-red-500">*</span>
               </label>
               <select
                 id="category"
@@ -170,16 +173,33 @@ export default function AddBookForm() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
               >
-                <option value="" disabled>اختر نوع الكتاب</option>
+                <option value="" disabled>اختر نوع العمل الأدبي</option>
                 {bookCategories.map((category, index) => (
                   <option key={index} value={category}>{category}</option>
                 ))}
               </select>
             </div>
+            
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="author">
+                سعر الشروحات <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="price"
+                name="price"
+                type="number"
+                required
+                value={bookData.price}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+                placeholder="أدخل سعر الكتاب"
+              />
+            </div>
+
 
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="summary">
-                ملخص الكتاب
+                الملخص 
               </label>
               <textarea
                 id="summary"
@@ -188,7 +208,7 @@ export default function AddBookForm() {
                 onChange={handleChange}
                 rows="4"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
-                placeholder="اكتب ملخصًا مختصرًا عن الكتاب"
+                placeholder="اكتب ملخصًا مختصرًا عن العمل الأدبي"
               ></textarea>
             </div>
 
@@ -267,7 +287,7 @@ export default function AddBookForm() {
               ></textarea>
             </div>
 
-            <div className="flex justify-between mt-8">
+            <div className="flex justify-between mt-15">
               <button
                 type="button"
                 onClick={handleSubmit}

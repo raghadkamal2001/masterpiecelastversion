@@ -8,7 +8,8 @@ const bookSchema = new mongoose.Schema({
   characters: String,
   rhetorical: String,
   overview: String,
-  questions: String
+  questions: String,
+  price: Number 
 }, { timestamps: true });
 
 module.exports = mongoose.models.Book || mongoose.model('Book', bookSchema);
