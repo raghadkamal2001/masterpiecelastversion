@@ -11,6 +11,18 @@ const createBook = async (req, res) => {
   }
 };
 
+const getBookById = async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json({ message: 'الكتاب غير موجود' });
+    }
+    res.json(book);
+  } catch (err) {
+    res.status(500).json({ error: 'خطأ في جلب الكتاب' });
+  }
+};
+
 const getAllBooks = async (req, res) => {
   try {
     const books = await Book.find();
@@ -42,6 +54,7 @@ module.exports = {
   createBook,
   getAllBooks,
 deleteBook,
-updateBook 
+updateBook,
+getBookById
 
 };

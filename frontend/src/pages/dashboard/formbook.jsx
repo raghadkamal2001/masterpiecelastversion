@@ -1,5 +1,7 @@
-import { useState } from "react";
+// 
 
+
+import { useState } from "react";
 
 export default function AddBookForm() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,8 +14,8 @@ export default function AddBookForm() {
     rhetorical: "",
     overview: "",
     questions: "",
-    price: ""
-
+    price: "",
+    quotes: [""] // مصفوفة لتخزين الاقتباسات
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -22,6 +24,34 @@ export default function AddBookForm() {
     setBookData({
       ...bookData,
       [name]: value
+    });
+  };
+
+  // دالة لإضافة اقتباس جديد
+  const addQuote = () => {
+    setBookData({
+      ...bookData,
+      quotes: [...bookData.quotes, ""]
+    });
+  };
+
+  // دالة لحذف اقتباس
+  const removeQuote = (index) => {
+    const newQuotes = [...bookData.quotes];
+    newQuotes.splice(index, 1);
+    setBookData({
+      ...bookData,
+      quotes: newQuotes
+    });
+  };
+
+  // دالة لتعديل اقتباس
+  const handleQuoteChange = (index, value) => {
+    const newQuotes = [...bookData.quotes];
+    newQuotes[index] = value;
+    setBookData({
+      ...bookData,
+      quotes: newQuotes
     });
   };
 
@@ -55,8 +85,6 @@ export default function AddBookForm() {
     }
   };
   
-
-  // تعريف أنواع الكتب
   const bookCategories = [
     "رواية",
     "قصة قصيرة",
@@ -90,11 +118,32 @@ export default function AddBookForm() {
           <p className="mb-2"><span className="font-bold ml-2">السعر:</span> {bookData.price}</p>
           <p className="mb-2"><span className="font-bold ml-2">النوع:</span> {bookData.category}</p>
           <p className="mb-2"><span className="font-bold ml-2">ملخص:</span> {bookData.summary}</p>
+          {bookData.quotes.length > 0 && (
+            <div className="mt-4">
+              <h4 className="font-bold mb-2">الاقتباسات:</h4>
+              <ul className="list-disc pr-5 space-y-2">
+                {bookData.quotes.map((quote, index) => (
+                  quote && <li key={index}>{quote}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
         
         <div className="flex justify-center">
           <button 
-            onClick={() => {setIsSubmitted(false); setCurrentPage(1);}}
+            onClick={() => {setIsSubmitted(false); setCurrentPage(1); setBookData({
+              title: "",
+              author: "",
+              category: "",
+              summary: "",
+              characters: "",
+              rhetorical: "",
+              overview: "",
+              questions: "",
+              price: "",
+              quotes: [""]
+            });}}
             className="bg-amber-500 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition-colors"
           >
             إضافة كتاب آخر
@@ -108,7 +157,6 @@ export default function AddBookForm() {
     <div className="bg-amber-50 p-6 rounded-lg shadow-md text-right max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-amber-800 text-center">إضافة عمل أدبي جديد</h2>
       
-      {/* شريط التقدم */}
       <div className="mb-8">
         <div className="flex justify-between mb-2">
           <span className={`text-sm ${currentPage > 1 ? "text-amber-500" : "text-amber-800 font-bold"}`}>
@@ -195,7 +243,6 @@ export default function AddBookForm() {
                 placeholder="أدخل سعر الكتاب"
               />
             </div>
-
 
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="summary">
@@ -285,6 +332,46 @@ export default function AddBookForm() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                 placeholder="أضف بعض الأسئلة الأدبية المهمة حول الكتاب"
               ></textarea>
+            </div>
+
+            {/* قسم إضافة الاقتباسات */}
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2">
+                اقتباسات من الكتاب
+              </label>
+              {bookData.quotes.map((quote, index) => (
+                <div key={index} className="mb-3 flex items-start">
+                  <textarea
+                    value={quote}
+                    onChange={(e) => handleQuoteChange(index, e.target.value)}
+                    rows="2"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="أدخل اقتباسًا من الكتاب"
+                  />
+                  {bookData.quotes.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeQuote(index)}
+                      className="mr-2 text-red-500 hover:text-red-700 p-2"
+                      title="حذف الاقتباس"
+                    >
+                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addQuote}
+                className="text-amber-600 hover:text-amber-800 flex items-center text-sm mt-2"
+              >
+                <svg className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                إضافة اقتباس جديد
+              </button>
             </div>
 
             <div className="flex justify-between mt-15">

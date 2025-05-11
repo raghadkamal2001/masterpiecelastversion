@@ -9,7 +9,9 @@ const bookSchema = new mongoose.Schema({
   rhetorical: String,
   overview: String,
   questions: String,
-  price: Number 
+  price: Number,
+  quotes: [String] // إضافة حقل الاقتباسات كمصفوفة نصوص
 }, { timestamps: true });
 
 module.exports = mongoose.models.Book || mongoose.model('Book', bookSchema);
+

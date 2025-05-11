@@ -78,8 +78,8 @@ const loginUser = async (req, res) => {
     
     // إنشاء توكن JWT
     const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
+      { id: user._id, username: user.username },
+      process.env.JWT_SECRET || 'defaultsecret', // أو أي سر عندك
       { expiresIn: '30d' }
     );
     
