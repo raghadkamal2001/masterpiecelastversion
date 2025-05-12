@@ -51,6 +51,7 @@ import AddAddBookForm from './pages/dashboard/formbook';
 import Navbar from './components/nav';
 import Details from './pages/detailspage'
 import BookInterface from './pages/singlepage'
+import UserProfile from './pages/UserProfile'
 
 function AppContent() {
   const location = useLocation();
@@ -68,6 +69,9 @@ function AppContent() {
         <Route path="/formbook" element={<AddAddBookForm />} />
         <Route path="/details" element={<Details/>} />
         <Route path="/books/:id" element={<BookInterface/>} />
+        <Route path="/boid" element={<UserProfile/>} />
+
+
 
 
 

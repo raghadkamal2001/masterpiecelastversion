@@ -82,6 +82,14 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [username, setUsername] = useState(null);
 
+
+  const handleLogout = () => {
+    Cookies.remove('token');         // حذف التوكن من الكوكيز
+    setUsername(null);               // إخفاء اسم المستخدم من الواجهة
+    window.location.href = '/';      // إعادة التوجيه (يمكن تغييره إلى "/login")
+  };
+  
+
   useEffect(() => {
     // تحقق من وجود توكن في الكوكيز
     const token = Cookies.get('token');
@@ -145,11 +153,20 @@ export default function Navbar() {
             <Heart size={20} />
           </button>
           {username && (
-            <div className="flex items-center space-x-2 mr-2">
-              <User size={20} className="text-amber-500" />
-              <span className="font-arabic">{username}</span>
-            </div>
-          )}
+  <>
+    <div className="flex items-center space-x-2 mr-2">
+      <User size={20} className="text-amber-500" />
+      <span className="font-arabic">{username}</span>
+    </div>
+    <button
+      onClick={handleLogout}
+      className="ml-4 text-red-400 hover:text-red-600 font-arabic"
+    >
+      تسجيل الخروج
+    </button>
+  </>
+)}
+
         </div>
       </div>
       
@@ -169,12 +186,21 @@ export default function Navbar() {
                 <a href="/join" className="hover:text-amber-500 py-2 font-arabic">انضم إلينا</a>
               </>
             )}
-            {username && (
-              <div className="flex items-center justify-end space-x-2 py-2">
-                <User size={20} className="text-amber-500" />
-                <span className="font-arabic">{username}</span>
-              </div>
-            )}
+           {username && (
+  <>
+    <div className="flex items-center justify-end space-x-2 py-2">
+      <User size={20} className="text-amber-500" />
+      <span className="font-arabic">{username}</span>
+    </div>
+    <button
+      onClick={handleLogout}
+      className="text-red-400 hover:text-red-600 text-right font-arabic mt-2"
+    >
+      تسجيل الخروج
+    </button>
+  </>
+)}
+
           </div>
         </div>
       )}
