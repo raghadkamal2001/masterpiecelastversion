@@ -143,6 +143,7 @@ const LoginForm = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
   
   // استخراج البيانات من الحالة لسهولة الاستخدام
   const { email, password } = formData;
@@ -178,17 +179,23 @@ const LoginForm = () => {
       Cookies.set('token', response.data.token, { expires: 7 }); // تخزين التوكن في الكوكيز لمدة 7 أيام
       
       // توجيه المستخدم إلى الصفحة الرئيسية بعد ثانية واحدة
-      setTimeout(() => {
-        window.location.href = '/dashboard';
-      }, 1000);
-      
-    } catch (err) {
-      // معالجة الخطأ
-      setError(err.response?.data?.message || 'خطأ في اسم المستخدم أو كلمة المرور');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+   setTimeout(() => {
+
+ const role = response.data.user.role;  if (role === 'admin') {
+    window.location.href = '/dash';
+  } else {
+    window.location.href = '/';
+  }
+}, 1000);
+
+} catch (err) {
+  // معالجة الخطأ
+  setError(err.response?.data?.message || 'خطأ في اسم المستخدم أو كلمة المرور');
+} finally {
+  setIsLoading(false);
+}
+};
+
   
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-800">

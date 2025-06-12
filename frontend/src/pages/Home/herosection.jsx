@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import final from '../../assets/logo.png';
-import { Search } from "lucide-react"; // استيراد أيقونة البحث
+import Cookies from 'js-cookie';
+
+
+
+import { Search, User } from "lucide-react"; // استيراد أيقونة البحث
 
 
 const ArabicLiteratureWebsite = () => {
   // حالة للسلايدر
   const [currentSlide, setCurrentSlide] = useState(0);
+    const [username, setUsername] = useState(null);
+      const [isMenuOpen, setIsMenuOpen] = useState(false);
+    
+  
   
   // الصور والمحتوى للسلايدر
   const slides = [
@@ -26,8 +34,35 @@ const ArabicLiteratureWebsite = () => {
     }
   ];
   
+
+  const handleLogout = () => {
+      Cookies.remove('token');         // حذف التوكن من الكوكيز
+      setUsername(null);               // إخفاء اسم المستخدم من الواجهة
+      window.location.href = '/';      // إعادة التوجيه (يمكن تغييره إلى "/login")
+    };
+
+
+    useEffect(() => {
+        // تحقق من وجود توكن في الكوكيز
+        const token = Cookies.get('token');
+        if (token) {
+          // استخراج اسم المستخدم من التوكن (هذا يعتمد على كيفية تخزينك للبيانات)
+          // هنا نفترض أن التوكن يحتوي على اسم المستخدم أو يمكنك جلبها من API
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            if (payload.username) {
+              setUsername(payload.username);
+            }
+          } catch (e) {
+            console.error('Error parsing token:', e);
+          }
+        }
+      }, []);
+
   // التنقل التلقائي بين الشرائح
   useEffect(() => {
+
+    
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
     }, 5000);
@@ -43,6 +78,8 @@ const ArabicLiteratureWebsite = () => {
   const goToPrevSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
   };
+
+  
   
   return (
     <div className="relative w-full h-screen overflow-hidden pt-2 ">
@@ -63,40 +100,173 @@ const ArabicLiteratureWebsite = () => {
       ))}
       
       {/* النافبار المحسن - أكثر وضوحًا مع خلفية شبه شفافة */}
-      <header className="relative z-20 w-full">
-        <div >
-          <div className="container mx-auto flex justify-between items-center px-6 py-4">
-                     {/* أيقونات البحث والمفضلة */}
-                     <div className="flex space-x-4">
-                     <button className="text-white hover:text-amber-500 transition text-xl ml-20">
-      <Search size={24} />
-    </button>
-            </div>
+     <header className="relative z-20 w-full">
+      <div>
+        <div className="container mx-auto flex justify-between items-center px-6 py-4">
+          {/* زر الهامبرغر للموبايل */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden text-white text-3xl"
+            aria-label="فتح القائمة"
+          >
+            ☰
+          </button>
 
-            {/* قائمة التنقل */}
-            <nav className="hidden md:flex space-x-6 items-center ml-70 " dir="rtl">
-              <a href="#" className="text-amber-500 font-semibold border-b-2 border-amber-500 pb-1">الرئيسية</a>
-              <a href="#" className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1">نبذة عنا</a>
-              <a href="#" className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1">الأقسام</a>
-              <a href="#" className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1">الاقتباسات</a>
-              <a href="#" className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1">تواصل معنا</a>
-              <a href="#" className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1"> أعلام الأدب</a>
-              <a href="#" className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1">تسجيل الدخول</a>
-              <a href="#" className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1">انضم الينا</a>
-            </nav>
-            <div className="flex items-center mr-25">
-  <img 
-    src={final} 
-    alt="Logo" 
-    className="h-40 w-35 object-cover rounded-md" 
-  />
-</div>
+          {/* أيقونات البحث والمفضلة */}
+          <div className="flex space-x-4 items-center ml-5">
+            <button className="text-white hover:text-amber-500 transition text-xl">
+              {/* <Search size={24} /> */}
+            </button>
 
-          
+            {username && (
+              <>
+                <button
+                  onClick={handleLogout}
+                  className="text-amber-500 hover:text-red-600 font-arabic mt-2"
+                >
+                  تسجيل الخروج
+                </button>
+                <div className="flex items-center justify-end space-x-2 py-2">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="flex items-center space-x-2"
+                  >
+                    <User size={20} className="text-white" />
+                    <span className="font-arabic text-white">{username}</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* قائمة التنقل الرئيسية - تظهر فقط على شاشات كبيرة */}
+          <nav
+            className="hidden md:flex space-x-6 items-center mr-8"
+            dir="rtl"
+          >
+            <a
+              href="/"
+              className="text-amber-500 font-semibold border-b-2 border-amber-500 pb-1"
+            >
+              الرئيسية
+            </a>
+            <a
+              href="/about"
+              className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1"
+            >
+              نبذة عنا
+            </a>
+            <a
+              href="/details"
+              className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1"
+            >
+              الأقسام
+            </a>
+            <a
+              href="/"
+              className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1"
+            >
+              الاقتباسات
+            </a>
+            <a
+              href="/contact"
+              className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1"
+            >
+              تواصل معنا
+            </a>
+            <a
+              href="#"
+              className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1"
+            >
+              أعلام الأدب
+            </a>
+            {!username && (
+              <>
+                <a
+                  href="/login"
+                  className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1"
+                >
+                  تسجيل الدخول
+                </a>
+                <a
+                  href="/register"
+                  className="text-white hover:text-amber-500 hover:border-b-2 hover:border-amber-500 transition pb-1"
+                >
+                  انضم الينا
+                </a>
+              </>
+            )}
+          </nav>
+
+          {/* شعار أو صورة */}
+          <div className="flex items-center mr-8">
+            <img
+              src={final}
+              alt="Logo"
+              className="h-40 w-35 object-cover rounded-md"
+            />
           </div>
         </div>
-      </header>
-      
+      </div>
+
+      {/* قائمة الموبايل */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white p-4 mt-4 rounded-md" dir='rtl'>
+          <div className="flex flex-col space-y-3 text-right">
+            <a href="/" className="text-orange-500 py-2 font-arabic">
+              الرئيسية
+            </a>
+            <a href="/about" className="hover:text-amber-500 py-2 font-arabic">
+              نبذة عنا
+            </a>
+            <a href="/details" className="hover:text-amber-500 py-2 font-arabic">
+              الأقسام
+            </a>
+            <a
+              href="/statistics"
+              className="hover:text-amber-500 py-2 font-arabic"
+            >
+             أعلام الأدب
+            </a>
+            <a href="/contact" className="hover:text-amber-500 py-2 font-arabic">
+              تواصل معنا
+            </a>
+            <a href="/media" className="hover:text-amber-500 py-2 font-arabic">
+              أعلام الأدب
+            </a>
+            {!username && (
+              <>
+                <a href="/login" className="hover:text-amber-500 py-2 font-arabic">
+                  تسجيل الدخول
+                </a>
+                <a href="/join" className="hover:text-amber-500 py-2 font-arabic">
+                  انضم إلينا
+                </a>
+              </>
+            )}
+            {username && (
+              <>
+                <div className="flex items-center justify-end space-x-2 py-2">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="flex items-center space-x-2"
+                  >
+                    <User size={20} className="text-orange-400" />
+                    <span className="font-arabic">{username}</span>
+                  </button>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-red-400 hover:text-red-600 text-right font-arabic mt-2"
+                >
+                  تسجيل الخروج
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </header>
       {/* المحتوى الرئيسي */}
       <main className="relative z-10 flex flex-col items-center justify-center h-[calc(100vh-100px)]" dir="rtl">
         <div className="text-center px-6 py-12 bg-transparent w-full max-w-4xl">
@@ -117,9 +287,9 @@ const ArabicLiteratureWebsite = () => {
           <div className="h-32 md:h-40"></div>
           
           <div className="mt-10">
-            <button className="bg-transparent hover:bg-amber-500 text-amber-500 hover:text-black font-bold py-2 px-8 border border-amber-500 hover:border-transparent rounded-full transition duration-300">
+           <a href="/login"> <button className="bg-transparent hover:bg-amber-500 text-amber-500 hover:text-black font-bold py-2 px-8 border border-amber-500 hover:border-transparent rounded-full transition duration-300">
               ابدأ الآن
-            </button>
+            </button></a>
           </div>
         </div>
         

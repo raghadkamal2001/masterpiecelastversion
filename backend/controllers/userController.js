@@ -24,7 +24,7 @@ const registerUser = async (req, res) => {
       username,
       email,
       password
-    });
+        });
     
     if (user) {
       res.status(201).json({
@@ -78,22 +78,24 @@ const loginUser = async (req, res) => {
     
     // إنشاء توكن JWT
     const token = jwt.sign(
-      { id: user._id, username: user.username },
-      process.env.JWT_SECRET || 'defaultsecret', // أو أي سر عندك
-      { expiresIn: '30d' }
-    );
-    
-    // إرجاع بيانات المستخدم مع التوكن
-    res.status(200).json({
-      success: true,
-      token,
-      user: {
-        _id: user._id,
-        name: user.name,
-        username: user.username,
-        email: user.email
-      }
-    });
+  { id: user._id, username: user.username, role: user.role }, // أضفنا role هنا
+  process.env.JWT_SECRET || 'defaultsecret',
+  { expiresIn: '30d' }
+);
+
+// إرجاع بيانات المستخدم مع التوكن
+res.status(200).json({
+  success: true,
+  token,
+  user: {
+    _id: user._id,
+    name: user.name,
+    username: user.username,
+    email: user.email,
+    role: user.role // أضفنا role هنا
+  }
+});
+
     
   } catch (error) {
     res.status(500).json({ 

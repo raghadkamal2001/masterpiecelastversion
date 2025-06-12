@@ -6,6 +6,12 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const bookRoutes = require('./routes/bookRoutes.js');
 const  authorRoutes=  require('./routes/authorRoutes.js');
+const paymentRoutes =  require('./routes/paymentRoutes.js');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+const messageRoutes = require('./routes/messageRoutes');
+
+
+
 
 
 
@@ -33,6 +39,11 @@ app.set('view engine', 'ejs');
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/authors', authorRoutes);
+app.use('/api', paymentRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/messages', messageRoutes);
+
+
 
 
 

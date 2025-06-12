@@ -16,14 +16,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* الاشتراك (moved to leftmost position) */}
           <div className="text-right order-4 md:order-1">
-            <h3 className="text-lg font-bold mb-4 border-b border-orange-500 pb-2 inline-block">الاشتراك</h3>
+            <h3 className="text-lg font-bold mb-4 border-b border-orange-400 pb-2 inline-block">الاشتراك</h3>
             <p className="text-gray-300 text-sm mb-4">
               اشترك في قائمتنا البريدية للحصول على آخر التحديثات
             </p>
             <form onSubmit={handleSubmit} className="flex">
               <button 
                 type="submit" 
-                className="bg-orange-500 hover:bg-orange-600 text-white p-2"
+                className="bg-orange-400 hover:bg-orange-500 text-white p-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -42,41 +42,41 @@ export default function Footer() {
 
           {/* قصيد (now second from left) */}
           <div className="text-right order-3 md:order-2">
-            <h3 className="text-lg font-bold mb-4 border-b border-orange-500 pb-2 inline-block">قصيد</h3>
+            <h3 className="text-lg font-bold mb-4 border-b border-orange-400 pb-2 inline-block">قصيد</h3>
             <ul className="text-gray-300 space-y-2">
-              <li className="flex items-center justify-end gap-2">
+             <a href="/"> <li className="flex items-center justify-end gap-2">
                 <span>الرئيسية</span>
-                <span className="text-orange-500">›</span>
-              </li>
-              <li className="flex items-center justify-end gap-2">
+                <span className="text-orange-400">›</span>
+              </li></a>
+              <a href="/about"><li className="flex items-center justify-end gap-2">
                 <span>نبذة عنا</span>
-                <span className="text-orange-500">›</span>
-              </li>
-              <li className="flex items-center justify-end gap-2">
+                <span className="text-orange-400">›</span>
+              </li></a>
+              <a href="/details"><li className="flex items-center justify-end gap-2">
                 <span>كل الأقسام</span>
-                <span className="text-orange-500">›</span>
-              </li>
-              <li className="flex items-center justify-end gap-2">
+                <span className="text-orange-400">›</span>
+              </li></a>
+              <a href="/"><li className="flex items-center justify-end gap-2">
                 <span>أعلام الأدب</span>
-                <span className="text-orange-500">›</span>
-              </li>
-              <li className="flex items-center justify-end gap-2">
+                <span className="text-orange-400">›</span>
+              </li></a>
+             <a href="/contact"> <li className="flex items-center justify-end gap-2">
                 <span>تواصل معنا</span>
-                <span className="text-orange-500">›</span>
-              </li>
+                <span className="text-orange-400">›</span>
+              </li></a>
             </ul>
           </div>
 
           {/* تواصل معنا (now third from left) */}
           <div className="text-right order-2 md:order-3">
-            <h3 className="text-lg font-bold mb-4 border-b border-orange-500 pb-2 inline-block">تواصل معنا</h3>
+            <h3 className="text-lg font-bold mb-4 border-b border-orange-400 pb-2 inline-block">تواصل معنا</h3>
             <p className="text-gray-300 mb-2">support@qaseed.com</p>
             <p className="text-gray-300">+00 111 222 3333</p>
           </div>
 
           {/* عن قصيد (moved to rightmost position) */}
           <div className="text-right order-1 md:order-4">
-            <h3 className="text-lg font-bold mb-4 border-b border-orange-500 pb-2 inline-block">عن قصيد</h3>
+            <h3 className="text-lg font-bold mb-4 border-b border-orange-400 pb-2 inline-block">عن قصيد</h3>
             <p className="text-gray-300 text-sm">
               قصيد، منصتك الأدبية التي تثري بحقل وإبداعات، عتبة لأفضل الأدبية، ومناط الضوء على أبرز أعلام الكلمة والشعر.
             </p>

@@ -49,9 +49,12 @@ import AdminDashboard from "./pages/dashboard/dash";
 import Footer from "./components/footer";
 import AddAddBookForm from './pages/dashboard/formbook';
 import Navbar from './components/nav';
-import Details from './pages/detailspage'
+import Details from './pages/category'
 import BookInterface from './pages/singlepage'
 import UserProfile from './pages/UserProfile'
+import Payment from './pages/payment'
+import ContactForm from './pages/contact'
+import About from './pages/about'
 
 function AppContent() {
   const location = useLocation();
@@ -63,13 +66,18 @@ function AppContent() {
       {!hideNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/registration" element={<LogupForm />} />
+        <Route path="/register" element={<LogupForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dash" element={<AdminDashboard />} />
         <Route path="/formbook" element={<AddAddBookForm />} />
         <Route path="/details" element={<Details/>} />
         <Route path="/books/:id" element={<BookInterface/>} />
-        <Route path="/boid" element={<UserProfile/>} />
+        <Route path="/profile" element={<UserProfile/>} />
+        <Route path="/payment/:id" element={<Payment/>}/>
+        <Route path="/contact" element={<ContactForm/>}/>  
+        <Route path="/about" element={<About/>}/>        
+   
+
 
 
 

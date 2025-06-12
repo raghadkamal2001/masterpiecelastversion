@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Bell, BookOpen, CreditCard, DollarSign, Home, LogOut, Menu, Search, Settings, User, Users, X } from 'lucide-react';
 import DashboardContent from "./dashboardcontent"
 import BooksManagement from "./books"
@@ -7,6 +7,9 @@ import AuthorsManagement from "./authors"
 import QuotesManagement from "./qoute"
 import PaymentsManagement from "./paymentsettings"
 import SettingsContent from "./settings"
+import MessagesPage from "./contact"
+import { jwtDecode } from 'jwt-decode'; 
+
 
 // الكومبوننت الرئيسي للداشبورد
 export default function AdminDashboard() {
@@ -18,16 +21,39 @@ export default function AdminDashboard() {
     { id: 'dashboard', name: 'الرئيسية', icon: <Home className="ml-2" size={18} /> },
     { id: 'books', name: 'إدارة الكتب', icon: <BookOpen className="ml-2" size={18} /> },
     { id: 'users', name: 'إدارة المستخدمين', icon: <Users className="ml-2" size={18} /> },
-    { id: 'quotes', name: 'إدارة الاقتباسات', icon: <BookOpen className="ml-2" size={18} /> },
     { id: 'authors', name: 'الأدباء والشعراء', icon: <User className="ml-2" size={18} /> },
     { id: 'payments', name: 'عمليات الدفع', icon: <DollarSign className="ml-2" size={18} /> },
-    { id: 'settings', name: 'الإعدادات', icon: <Settings className="ml-2" size={18} /> },
+    // { id: 'contacts', name: 'رسائل المستخدمين  ', icon: <MessagesPage className="ml-2" size={18} /> },
+        // { id: 'payments', name: 'رسائل المستخدمين  ', icon: <DollarSign className="ml-2" size={18} /> },
+
+    { id: 'settings', name: 'رسائل المستخدمين', icon: <Settings className="ml-2" size={18} /> },
   ];
 
   // تبديل عرض الشريط الجانبي
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+   useEffect(() => {
+    const token = getCookie("token"); // التوكن من الكوكيز
+
+    if (!token) {
+      window.location.href = "/login";
+    } else {
+      const decoded = jwtDecode(token);
+      if (decoded.role !== "admin") {
+        alert("أنت غير مصرح لك بدخول لوحة التحكم");
+        window.location.href = "/";
+      }
+    }
+  }, []);
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
 
   // عرض المحتوى المناسب حسب التاب المختار
   const renderContent = () => {
@@ -46,6 +72,8 @@ export default function AdminDashboard() {
         return <PaymentsManagement />;
       case 'settings':
         return <SettingsContent />;
+        case 'contacts':
+        return <BooksManagement />;
       default:
         return <DashboardContent />;
     }
@@ -78,8 +106,8 @@ export default function AdminDashboard() {
             ))}
           </ul>
         </nav>
-        <div className="absolute bottom-0 w-full p-4 border-t border-gray-700">
-          <button className="flex items-center w-full p-2 rounded hover:bg-gray-800 transition-colors">
+        <div className="absolute bottom-0 w-full p-4">
+          <button className="flex items-center w-full p-2 rounded transition-colors">
             <LogOut className="ml-2" size={18} />
             {isSidebarOpen && <span>تسجيل الخروج</span>}
           </button>
@@ -103,15 +131,10 @@ export default function AdminDashboard() {
                 />
                 <Search className="absolute top-2 right-3 text-gray-500" size={18} />
               </div>
-              <button className="relative p-2 rounded-full hover:bg-gray-100">
-                <Bell size={20} />
-                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
+             
               <div className="flex items-center">
-                <div className="w-8 h-8 overflow-hidden rounded-full bg-gray-300">
-                  <img src="/api/placeholder/40/40" alt="صورة المستخدم" className="w-full h-full object-cover" />
-                </div>
-                {isSidebarOpen && <span className="mr-2">مدير النظام</span>}
+                
+                {/* {isSidebarOpen && <span className="mr-2">مدير النظام</span>} */}
               </div>
             </div>
           </div>

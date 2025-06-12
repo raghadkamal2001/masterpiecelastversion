@@ -41,14 +41,18 @@ const BooksPage = () => {
   return (
     <div className="relative p-6">
       {/* ✅ زر إضافة كتاب في الزاوية العلوية اليسرى بلون برتقالي */}
-      <Link
-        to="/formbook"
-        className="fixed top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded shadow hover:bg-orange-600 z-50"
-      >
-        + إضافة كتاب
-      </Link>
+     
 
       <h1 className="text-2xl font-bold mb-4 text-center">قائمة الكتب</h1>
+     
+<div className="flex justify-left mt-8 mb-10">
+  <Link
+    to="/formbook"
+    className="bg-orange-500 text-white px-6 py-3 rounded shadow hover:bg-orange-600 transition duration-300"
+  >
+    + إضافة كتاب
+  </Link>
+</div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {books.map((book) => (
